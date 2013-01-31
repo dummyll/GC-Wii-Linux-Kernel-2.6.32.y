@@ -4525,6 +4525,7 @@ int dev_ioctl(struct net *net, unsigned int cmd, void __user *arg)
 		return ret;
 
 	case SIOCETHTOOL:
+#ifdef CONFIG_ETHTOOL
 		dev_load(net, ifr.ifr_name);
 		rtnl_lock();
 		ret = dev_ethtool(net, &ifr);
@@ -4537,6 +4538,9 @@ int dev_ioctl(struct net *net, unsigned int cmd, void __user *arg)
 				ret = -EFAULT;
 		}
 		return ret;
+#else
+			return -EINVAL;
+#endif
 
 	/*
 	 *	These ioctl calls:
