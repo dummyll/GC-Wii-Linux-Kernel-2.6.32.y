@@ -1,3 +1,28 @@
+Linux kernel for Linux Wii (Currently: 2.6.32.60)
+
+This kernel include:
+ - mikeP5 patch
+ - Farter framebuffer patch
+ - addition default configs (mini-mode-wii and ios-mode-wii) 
+	(Can be found in: "arch/powerpc/configs/"
+	
+ - various fixes backported from newer kernels
+ - Nold360 SDHC driver updates from Github branch at:
+	"https://github.com/Nold360/GC-Linux-Kernel-2.6.32/commits/master"
+
+
+Known BUGS:
+BFQ I/O Scheduler - no longer compiles (FIXME)
+SLQB debugging support - no longer compiles (FIXME)
+Minor bugs when compiling without "panic reporting code"
+
+
+Notice:
+For basic (cross) compiling instructions, check the following wiki webpage at:
+"http://www.gc-linux.org/wiki/Building_a_GameCube_Linux_Kernel_%28ARCH%3Dpowerpc%29"
+
+
+
 	Linux kernel release 2.6.xx <http://kernel.org/>
 
 These are the release notes for Linux version 2.6.  Read them carefully,
