@@ -43,11 +43,11 @@ needed for each new swap device.
 If correctly compiled as a module and placed in the correct location, use
 "modprobe zram num_devices=#" first before using the commands above.
 
-Varify zRam has started with the command "swapon -s".  Turn zRam swapping off
+Verify zRam has started with the command "swapon -s".  Turn zRam swapping off
 with "swapoff /dev/zram#".  By default this is done using "swapoff /dev/zram0".
 
 
-Varifiying zCache Status
+Verifying zCache Status
 Once the system boots, run "dmesg | grep zcache" to see its status 
 (If nothing is shown zCache is likely disabled)
 
