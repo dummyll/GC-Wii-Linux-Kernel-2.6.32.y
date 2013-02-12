@@ -1,14 +1,19 @@
-Linux kernel for Linux Wii (Currently: 2.6.32.60)
+Linux Kernel for Wii (Currently: 2.6.32.60)
 
-This kernel include:
- - mikeP5 patch
- - Farter framebuffer patch
- - addition default configs (mini-mode-wii and ios-mode-wii) 
-	(Can be found in: "arch/powerpc/configs/"
-	
- - various fixes backported from newer kernels
- - Nold360 SDHC driver updates from Github branch at:
-	"https://github.com/Nold360/GC-Linux-Kernel-2.6.32/commits/master"
+This Kernel includes:
+ - MINI Kernel Preview 5 patch (http://wiibrew.org/wiki/Wii-Linux)
+
+ - Farter's Deffered I/O Framebuffer patch (http://fartersoft.com/)
+
+ - Nold360 SDHC driver updates (http://www.gc-forever.com/forums/portal.php)
+	(https://github.com/Nold360/GC-Linux-Kernel-2.6.32/commits/master)
+
+ - Additional default configs (mini-mode-wii and ios-mode-wii)
+	(Located in: "arch/powerpc/configs/"
+
+ - Various features cherry-picked from other 2.6.32 based git repositories
+
+  - Various fixes backported from Mainline Linux Kernels
 
 
 Known BUGS:
@@ -17,9 +22,34 @@ SLQB debugging support - no longer compiles (FIXME)
 Minor bugs when compiling without "panic reporting code"
 
 
-Notice:
+
+General Notices:
+
+(Cross) Compiling the Kernel
 For basic (cross) compiling instructions, check the following wiki webpage at:
 "http://www.gc-linux.org/wiki/Building_a_GameCube_Linux_Kernel_%28ARCH%3Dpowerpc%29"
+
+
+Starting zRam
+If compiled within the Kernel (not as a module) run the following commands to start
+a basic zRam swap device.  Use "-p #" to set the priority (the lower the value,
+the higher the priority).  Number of devices can be set with "zram num_devices=#".
+By default, the number of devices is 1.  Adjust the device number (dev/zram#) as
+needed for each new swap device.
+
+	1) mkswap /dev/zram0
+	2) swapon /dev/zram0 -p 100
+
+If correctly compiled as a module and placed in the correct location, use
+"modprobe zram num_devices=#" first before using the commands above.
+
+Varify zRam has started with the command "swapon -s".  Turn zRam swapping off
+with "swapoff /dev/zram#".  By default this is done using "swapoff /dev/zram0".
+
+
+Varifiying zCache Status
+Once the system boots, run "dmesg | grep zcache" to see its status 
+(If nothing is shown zCache is likely disabled)
 
 
 
