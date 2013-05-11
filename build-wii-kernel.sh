@@ -13,8 +13,8 @@ echo "GameCube and Wii Kernels.  While this isn't very robust, it should"
 echo -e "suffice for most basic compilations.\n"
 
 echo "Compiling a Kernel usually requires the following dependencies at minimal:"
-echo "advancecomp (advdef), autoconfig, automake, bash, build-essential,"
-echo "busybox, bzip2, fakeroot, gcc, g++, gizp,libnurses5-dev, strip."
+echo "advancecomp (advdef), autoconfig, automake, bash, build-essential, busybox, bzip2,"
+echo "ccache, fakeroot, gcc, g++, gizp, libmpfr-dev, libgmp-dev,libnurses5-dev, strip."
 echo "While there are other dependencies, these are the most common ones."
 echo "If any are missing, it's highly recommended that this script be stopped"
 echo -e "and these dependency packages be installed before continuing.\n"
@@ -38,7 +38,7 @@ do
   echo "3) DeltaResero's - Minimalist / No Modules (IOS)"
   echo "4) Use Existing (.config) Configuration"
   echo "5) Quit Script"
-  echo -n "Answer: "
+  echo -n "Response: "
   read opt
   case $opt in
     1) echo "Selecting config: wii_defconfig"
@@ -83,7 +83,7 @@ if [ ${MACHINE_TYPE} == 'x86_32' ]; then
 elif [ ${MACHINE_TYPE} == 'x86_64' ]; then
   MACHINE_TYPE='x86-64'
   echo "ARCH: 64-bit -" ${MACHINE_TYPE}
-  export LD_LIBRARY_PATH=H-x86_64-pc-linux-gnu/cross-powerpc-linux-uclibc/usr/bin/
+  export LD_LIBRARY_PATH=H-x86_64-pc-linux-gnu/cross-powerpc-linux-uclibc/usr/lib
 
   if [ ${useConfig} != '.config' ]; then
     make ${useConfig} ARCH=powerpc CROSS_COMPILE=H-x86_64-pc-linux-gnu/cross-powerpc-linux-uclibc/usr/bin/powerpc-linux-
