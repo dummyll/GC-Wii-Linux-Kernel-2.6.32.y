@@ -1,4 +1,4 @@
-Linux Kernel for Wii (Currently: 2.6.32.61)
+Linux Kernel for Wii (Currently: 2.6.32.60)
 
 This Kernel includes:
  - MINI Kernel Preview 5 patch (http://wiibrew.org/wiki/Wii-Linux)
@@ -13,12 +13,14 @@ This Kernel includes:
 
  - Various features cherry-picked from other 2.6.32 based git repositories
 
- - Various fixes backported from Mainline Linux Kernels
+  - Various fixes backported from Mainline Linux Kernels
 
 
 Known BUGS:
 BFQ I/O Scheduler - no longer compiles (FIXME)
 SLQB debugging support - no longer compiles (FIXME)
+Minor bugs when compiling without "panic reporting code"
+
 
 
 General Notices:
