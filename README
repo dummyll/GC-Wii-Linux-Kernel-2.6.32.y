@@ -17,7 +17,6 @@ This Kernel includes:
 
 
 Known BUGS:
-BFQ I/O Scheduler - no longer compiles (FIXME)
 SLQB debugging support - no longer compiles (FIXME)
 
 
