@@ -48,7 +48,36 @@ Verifying zCache Status
 Once the system boots, run "dmesg | grep zcache" to see its status 
 (If nothing is shown zCache is likely disabled)
 
+Compiled Filesystem/Kernel GameCube Demos
 
+    NONE - (Contact me if you have a fully tested one that can be used)
+
+Fully Customized (More Complete) GameCube Desktop Distributions Images:
+
+    NONE - (Contact me if you have a fully tested one that can be used)
+
+Compiled Filesystem/Kernel Wii Demos (Currently: 2.6.32.61)
+MINI kernels: http://ubuntuone.com/6wrBe55kyYrsztgzO3sfMc
+IOS kernels: http://ubuntuone.com/2pEMpxArMfd5VGkwyafkDn
+Debian Squeeze: http://ubuntuone.com/6uJRUy4XF1MHX7WEjsKMTl
+
+
+    NOTE: For kernels, place their folder in the apps folder on the SD card
+    NOTE: Debian Wheezy and newer don't work correctly due to udev errors
+
+Fully Customized (More Complete) Wii Desktop Distributions Images:
+Debian Wheezy Custom: UPLOADING...
+Debian Jessie Custom: NOT READY YET (waiting for stability)
+Ubuntu (ICEWM): NOT READY YET... (UTC clock related [non-kernel] errors)
+
+    NOTE: Burn images to SD card in Linux with: "sudo dd if=4gbSqueezeWii.img of=/dev/sd#" where # is the letter of the drive mount point (typically sdb or sdc). Be careful, using the wrong sd# device may result in lost data
+
+ToDo:
+
+    Add a complete todo list here
+    Add better instructions for SD card disc images  
+  
+========================================================================================
 
 	Linux kernel release 2.6.xx <http://kernel.org/>
 

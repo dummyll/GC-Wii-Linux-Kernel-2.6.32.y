@@ -860,9 +860,6 @@ static int __init setup_slqb_debug(char *str)
 		case 't':
 			slqb_debug |= SLAB_TRACE;
 			break;
-		case 'a':
-			slqb_debug |= SLAB_FAILSLAB;
-			break;
 		default:
 			printk(KERN_ERR "slqb_debug option '%c' "
 				"unknown. skipped\n", *str);
@@ -3479,23 +3476,6 @@ static ssize_t total_objects_show(struct kmem_cache *s, char *buf)
 	return sprintf(buf, "%lu\n", stats.nr_objects);
 }
 SLAB_ATTR_RO(total_objects);
-
-#ifdef CONFIG_FAILSLAB
-static ssize_t failslab_show(struct kmem_cache *s, char *buf)
-{
-	return sprintf(buf, "%d\n", !!(s->flags & SLAB_FAILSLAB));
-}
-
-static ssize_t failslab_store(struct kmem_cache *s, const char *buf,
-							size_t length)
-{
-	s->flags &= ~SLAB_FAILSLAB;
-	if (buf[0] == '1')
-		s->flags |= SLAB_FAILSLAB;
-	return length;
-}
-SLAB_ATTR(failslab);
-#endif
 
 static ssize_t reclaim_account_show(struct kmem_cache *s, char *buf)
 {
