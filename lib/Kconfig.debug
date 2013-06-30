@@ -345,11 +345,13 @@ config SLUB_STATS
 	  Try running: slabinfo -DA
 
 config SLQB_DEBUG
+	depends on !GAMECUBE_COMMON
 	default n
 	bool "Enable SLQB debugging support"
 	depends on SLQB
 
 config SLQB_DEBUG_ON
+	depends on !GAMECUBE_COMMON
 	default n
 	bool "SLQB debugging on by default"
 	depends on SLQB_DEBUG

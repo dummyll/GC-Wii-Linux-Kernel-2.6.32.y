@@ -16,10 +16,6 @@ This Kernel includes:
  - Various fixes backported from Mainline Linux Kernels
 
 
-Known BUGS:
-SLQB debugging support - no longer compiles (FIXME)
-
-
 General Notices:
 
 (Cross) Compiling the Kernel
