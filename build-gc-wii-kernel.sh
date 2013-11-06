@@ -13,9 +13,10 @@ echo "GameCube and Wii Kernels.  While this isn't very robust, it should"
 echo -e "suffice for most basic compilations.\n"
 
 echo "Compiling a kernel usually requires the following dependencies at minimal:"
-echo "advancecomp (advdef), autoconfig, automake, bash, build-essential, busybox, bzip2,"
-echo "ccache, fakeroot, gcc, g++, gizp, libmpfr-dev, libgmp-dev,libnurses5-dev, strip."
-echo "While there are other dependencies, these are the most common ones."
+echo "advancecomp (advdef), autoconfig, automake, bash, build-essential, busybox,"
+echo "bzip2, ccache, fakeroot, gcc, g++, gizp, libmpfr-dev, libgmp-dev,libnurses5-dev,"
+echo "libnurses5-dev, strip."
+echo -e "While there are other dependencies, these are the most common ones."
 echo "If any are missing, it's highly recommended that this script be stopped"
 echo -e "and these dependency packages be installed before continuing.\n"
 
@@ -190,9 +191,6 @@ find -name '*.ko' -exec cp -av {} $TEMP_DIRECTORY \;
 echo -e "Moving temp modules folder ("$TEMP_DIRECTORY") into current directory...\n"
 mv $TEMP_DIRECTORY .
 
-# Determine whether to run super strip or not
-sstripKernel=''
-
 while :
 do
   echo "Reduce kernel size by running super strip?"
@@ -202,13 +200,86 @@ do
   read opt3
   case $opt3 in
     1) echo "Super strip selected..."
+        echo -e "Checking for installed Super Strip (sstrip)..."
+        #Strip zImage even farther (if possible)
+        strip=./sstrip
+        zImageFile=arch/powerpc/boot/zImage
+        zImageInitrdFile=arch/powerpc/boot/zImage.initrd
+        #Locate sstrip
+        if [ sstrip -v]; then #Use installed sstrip
+          echo "sstrip found..."
+          #Checks for zImage and runs sstrip on it
+          if [ -f $zImageFile ]; then
+            echo "Stripping zImage..."
+            sstrip -z $zImageFile
+          #Checks for zImage.initrd and runs sstrip on it
+          elif [ -f $zImageInitrdFile ]; then
+            echo "Stripping zImage.initrd"
+            sstrip -z $zImageInitrdFile
+          else #No zImage (broken build)
+            echo "Error, zImage (Kernel) not found!"
+            echo "Quitting script..."
+            exit 1
+          fi
+        else #Use local sstrip
+          echo "external sstrip not found, using local build"
+          #Checks for an already existing local sstrip from a previous build
+          if [ -f $strip ]; then
+            echo "Found sstrip..."
+          else
+            echo "Building local sstrip..."
+            make -C super-strip
+            mv super-strip/sstrip sstrip
+          fi
+
+          #Checks if local sstrip is executable
+          if [ -x "$strip" ]; then
+            echo "The sstrip binary is executable..."
+          else
+            echo "Attempting to make sstrip executable..."
+            chmod +x sstrip
+          fi
+
+          #Checks if local sstrip is same arch as host
+          if [ $(file $strip | grep -ci ${MACHINE_TYPE}) == '1' ]; then
+            echo "sstrip is correct arch (same as host machine)..."
+          else
+            echo "sstrip is not correct arch (different than host machine)..."
+            echo "Removing sstrip..."
+            rm sstrip
+
+            echo "Building sstrip..."
+            make -C super-strip
+            mv super-strip/sstrip sstrip
+
+            echo "Attempting to make sstrip executable..."
+            chmod +x sstrip
+
+            echo "Cleaning sstrip build files..."
+            make clean -C super-strip
+          fi
+
+          #Checks for zImage and runs sstrip on it
+          if [ -f $zImageFile ]; then
+            echo "Stripping zImage..."
+            ./sstrip -z $zImageFile
+          #Checks for zImage.initrd and runs sstrip on it
+          elif [ -f $zImageInitrdFile ]; then
+            echo "Stripping zImage.initrd"
+            ./sstrip -z $zImageInitrdFile
+          else #No zImage (broken build)
+            echo "Error, zImage (Kernel) not found!"
+            echo "Quitting script..."
+            exit 1
+          fi
+        fi #End of else condition for checking for sstrip
         echo -e "WARNING: DO NOT STRIP KERNEL ELF WITH STRIP, IT WAS STRIPPED WITH SSTRIP"
         echo "(Stripping the zImage with strip will result in corruption!)"
-        sstripKernel='yes'
         break;;
-    2) echo "Super strip not selected..."
-        sstripKernel='no'
+
+    2) echo "Super strip (sstrip) not selected..."
         break;;
+
     *) echo -e "\n$opt is an invalid option."
        echo "Please select option from 1-4 only"
        echo "Press [enter] key to continue. . ."
@@ -217,67 +288,8 @@ do
   esac
 done
 
-if [ sstripKernel == 'yes' ]; then
-  #Strip zImage even farther (if possible)
-  strip=./sstrip
-  zImageFile=arch/powerpc/boot/zImage
-  zImageInitrdFile=arch/powerpc/boot/zImage.initrd
-
-  #Check for already existing local sstrip build
-  if [ -f $strip ]; then
-    echo "Found sstrip..."
-  else
-    echo "Building sstrip..."
-    make -C super-strip
-    mv super-strip/sstrip sstrip
-  fi
-
-  #checks if sstrip is executable
-  if [ -x "$strip" ]; then
-    echo "The sstrip binary is executable..."
-  else
-    echo "Attempting to make sstrip executable..."
-    chmod +x sstrip
-  fi
-
-
-  #Checks if sstrip is same arch as host
-  if [ $(file $strip | grep -ci ${MACHINE_TYPE}) == '1' ]; then
-    echo "sstrip is correct arch (same as host machine)..."
-  else
-    echo "sstrip is not correct arch (different than host machine)..."
-    echo "Removing sstrip..."
-    rm sstrip
-
-    echo "Building sstrip..."
-    make -C super-strip
-    mv super-strip/sstrip sstrip
-
-    echo "Attempting to make sstrip executable..."
-    chmod +x sstrip
-
-    echo "Cleaning sstrip build files..."
-    make clean -C super-strip
-  fi
-
-  #Checks for zImage and runs sstrip on it
-  if [ -f $zImageFile ]; then
-    echo "Stripping zImage..."
-    ./sstrip -z $zImageFile
-
-  #Checks for zImage.initrd and runs sstrip on it
-  elif [ -f $zImageInitrdFile ]; then
-    echo "Stripping zImage.initrd"
-    ./sstrip -z $zImageInitrdFile
-  else #No zImage (broken build)
-    echo "Error, zImage (Kernel) not found!"
-    echo "Quitting script..."
-    exit 1
-  fi
-fi
-
 #Script is finished (everything should have been successful upon reaching here)
-echo -e "Done! (Check to see if there were any errors above)\n"
+echo -e "\nDone! (Check to see if there were any errors above)\n"
 echo "The binary (zImage) can be found in: 'arch/powerpc/boot'"
 echo "Modules (if any) should be located in the folder:" $MOD_DIRECTORY
 exit 0
