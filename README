@@ -55,10 +55,14 @@ Username: wii
 Password: delta  
 *Root password is the same (delta)  
 
-NOTE:  Burn images to SDHC cards in Linux with: "sudo dd if=4gbSqueezeWii.img of=/dev/sdx#"
-x is the letter of the drive mount point (typically sdb or sdc) and # is the partition
-number (usually 2).  Be careful, using the wrong sdx# device may result in lost data.
-(Replace "4gbSqueezeWii.img" with name of the actual disc image if not using this one)  
+NOTE:  Burn images to SDHC cards in Linux with:
+	"sudo dd if=4gbSqueezeWii.img of=/dev/sdx#"
+
+x is the letter of the drive mount point (typically sdb or sdc)
+and # is the partition number (usually 2).  Be careful, using
+the wrong sdx# device may result in lost data.
+(Replace "4gbSqueezeWii.img" with name of the actual disc image
+if not using this one)  
 
 ========================================================================================
 
