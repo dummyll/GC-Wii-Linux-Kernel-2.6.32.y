@@ -1,4 +1,5 @@
 Linux Kernel for Wii (Currently: 2.6.32.61)
+WARNING: THIS REPOSITORY WILL SOON BE REMOVED AS IT HAS BEEN MERGED WITH THE GC/WII LINUX KERNEL REPOSITORY AT: https://github.com/DeltaResero/GC-Wii-Linux-Kernels.git  
 
 This Kernel includes:
  - MINI Kernel Preview 5 patch (http://wiibrew.org/wiki/Wii-Linux)
